@@ -25,6 +25,7 @@ setup(
         "setuptools",
         "pandas",
         "websocket-client",
-        "requests"
+        "requests",
+        "curl_cffi"
     ],
 )
