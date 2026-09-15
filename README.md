@@ -1,6 +1,6 @@
 # **NOTE**
 
-This is a fork of the original [TvDatafeed](https://github.com/rongardF/tvdatafeed.git) project by StreamAlpha. This fork has live data retrieving feature implemented. 
+This is a fork of the original [TvDatafeed](https://github.com/rongardF/tvdatafeed.git) project by StreamAlpha, maintained by [adfaxs](https://github.com/adfaxs/tvdatafeed). This fork has live data retrieving feature implemented, and uses [curl_cffi](https://github.com/lexiforest/curl_cffi) with Chrome TLS impersonation so TradingView requests are less likely to be blocked.
 More information about this will be found in the TvDatafeedLive section down below in the README.
 
 # **TvDatafeed**
@@ -15,8 +15,10 @@ If you found the content useful and want to support my work, you can buy me a co
 This module can be installed from github repo
 
 ```sh
-pip install --upgrade --no-cache-dir git+https://github.com/rongardF/tvdatafeed.git
+pip install --upgrade --no-cache-dir git+https://github.com/adfaxs/tvdatafeed.git
 ```
+
+`curl_cffi` is required for the TLS impersonation used when signing in and searching symbols. It is declared in `setup.py`, so it is installed automatically with the command above.
 
 For usage instructions, watch these videos-
 
@@ -261,7 +263,7 @@ Following timeframes intervals are supported-
 
 Before creating an issue in this library, please follow the following steps.
 
-1. Search the problem you are facing is already asked by someone else. There might be some issues already there, either solved/unsolved related to your problem. Go to [issues](https://github.com/StreamAlpha/tvdatafeed/issues) page, use `is:issue` as filter and search your problem. ![image](https://user-images.githubusercontent.com/59556194/128167319-2654cfa1-f718-4a52-82f8-b0c0d26bf4ef.png)
+1. Search the problem you are facing is already asked by someone else. There might be some issues already there, either solved/unsolved related to your problem. Go to [issues](https://github.com/adfaxs/tvdatafeed/issues) page, use `is:issue` as filter and search your problem. ![image](https://user-images.githubusercontent.com/59556194/128167319-2654cfa1-f718-4a52-82f8-b0c0d26bf4ef.png)
 2. If you feel your problem is not asked by anyone or no issues are related to your problem, then create a new issue.
 3. Describe your problem in detail while creating the issue. If you don't have time to detail/describe the problem you are facing, assume that I also won't be having time to respond to your problem.
 4. Post a sample code of the problem you are facing. If I copy paste the code directly from issue, I should be able to reproduce the problem you are facing.
