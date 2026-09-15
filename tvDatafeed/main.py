@@ -2,6 +2,7 @@ import datetime
 import enum
 import json
 import logging
+import os
 import random
 import re
 import string
@@ -11,6 +12,38 @@ from curl_cffi import requests
 import json
 
 logger = logging.getLogger(__name__)
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:  # Python < 3.9
+    ZoneInfo = None
+
+
+def _resolve_bar_tz():
+    """Timezone used to render TradingView epoch timestamps into bar dates.
+
+    tvDatafeed builds the ``datetime`` column with
+    ``datetime.datetime.fromtimestamp(epoch)``, which renders in the *local*
+    zone. That makes bar dates machine-dependent: the same bar can land on a
+    different calendar day on an IST desktop vs a UTC CI runner, which can
+    push a daily bar across a weekly (W-SUN) boundary and change signals.
+
+    Pin the zone explicitly so every environment yields identical rows.
+    Override with ``TVDATA_TZ`` (IANA name); defaults to ``Asia/Kolkata``.
+    """
+    name = os.environ.get("TVDATA_TZ", "Asia/Kolkata")
+    if ZoneInfo is not None:
+        try:
+            return ZoneInfo(name)
+        except Exception:
+            logger.warning(
+                "TVDATA_TZ=%r could not be resolved; using fixed +05:30 offset", name
+            )
+    # India has no DST, so a fixed offset is an exact fallback.
+    return datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+
+
+BAR_TZ = _resolve_bar_tz()
 
 
 class Interval(enum.Enum):
@@ -140,7 +173,7 @@ class TvDatafeed:
 
             for xi in x:
                 xi = re.split("\[|:|,|\]", xi)
-                ts = datetime.datetime.fromtimestamp(float(xi[4]))
+                ts = datetime.datetime.fromtimestamp(float(xi[4]), tz=BAR_TZ).replace(tzinfo=None)
 
                 row = [ts]
 

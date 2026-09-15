@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="tvdatafeed",
-    version="2.1.0",
+    version="2.1.1",
     packages=["tvDatafeed"],
     url="https://github.com/adfaxs/tvdatafeed/",
     project_urls={
@@ -26,6 +26,7 @@ setup(
         "pandas",
         "websocket-client",
         "requests",
-        "curl_cffi"
+        "curl_cffi",
+        "tzdata"
     ],
 )
